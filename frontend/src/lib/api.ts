@@ -10,7 +10,7 @@ const api = axios.create({
 // Request interceptor to add token if needed (though cookies are handled by withCredentials)
 api.interceptors.request.use((config) => {
   if (typeof window !== "undefined") {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

@@ -38,7 +38,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const res = await api.post("/auth/login", { email, password });
     setUser(res.data.user);
     if (res.data.token) {
-      localStorage.setItem("token", res.data.token);
+      sessionStorage.setItem("token", res.data.token);
     }
     router.replace("/dashboard");
   };
@@ -47,7 +47,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const res = await api.post("/auth/signup", { name, email, password, role });
     setUser(res.data.user);
     if (res.data.token) {
-      localStorage.setItem("token", res.data.token);
+      sessionStorage.setItem("token", res.data.token);
     }
     router.replace("/dashboard");
   };
@@ -59,7 +59,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.error("Logout API failed", err);
     } finally {
       setUser(null);
-      localStorage.removeItem("token");
+      sessionStorage.removeItem("token");
       router.push("/login");
     }
   };
