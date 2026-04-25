@@ -98,3 +98,19 @@ export const deleteQuiz = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const updateQuiz = async (req, res) => {
+  const { id } = req.params;
+  const { title, description, duration, attempt_limit } = req.body;
+
+  try {
+    await client.execute({
+      sql: "UPDATE quizzes SET title = ?, description = ?, duration = ?, attempt_limit = ? WHERE id = ?",
+      args: [title, description, duration, attempt_limit, id],
+    });
+    res.json({ message: "Quiz updated successfully" });
+  } catch (error) {
+    console.error("Update quiz error:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
