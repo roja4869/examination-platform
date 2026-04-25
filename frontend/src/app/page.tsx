@@ -12,11 +12,11 @@ export default function Home() {
   const { user, loading } = useAuth();
   const router = useRouter();
 
+  // Removed forced redirect to allow users to visit home page while logged in
   useEffect(() => {
-    if (!loading && user) {
-      router.replace("/dashboard");
-    }
-  }, [user, loading, router]);
+    // We only log the state for debugging, no forced router.replace here
+    console.log("Home page loaded", { loading, hasUser: !!user });
+  }, [user, loading]);
 
   return (
     <main className="min-h-screen">

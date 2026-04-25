@@ -40,7 +40,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (res.data.token) {
       localStorage.setItem("token", res.data.token);
     }
-    router.push("/dashboard");
+    router.replace("/dashboard");
   };
 
   const signup = async (name: string, email: string, password: string, role: string) => {
@@ -49,7 +49,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (res.data.token) {
       localStorage.setItem("token", res.data.token);
     }
-    router.push("/dashboard");
+    router.replace("/dashboard");
   };
 
   const logout = async () => {
