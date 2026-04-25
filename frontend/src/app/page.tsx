@@ -1,12 +1,23 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { ArrowRight, CheckCircle2, Shield, Zap, Code, Award } from "lucide-react";
 
 export default function Home() {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && user) {
+      router.push("/dashboard");
+    }
+  }, [user, loading, router]);
+
   return (
     <main className="min-h-screen">
       <Navbar />
@@ -31,13 +42,18 @@ export default function Home() {
                 Experience seamless quiz management, real-time analytics, and secure coding environments.
               </p>
               <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
-                <Link href="/signup" className="btn-primary flex items-center space-x-2 text-lg px-8 py-3">
-                  <span>Get Started Free</span>
+                <Link 
+                  href={user ? "/dashboard" : "/signup"} 
+                  className="btn-primary flex items-center space-x-2 text-lg px-8 py-3"
+                >
+                  <span>{user ? "Go to Dashboard" : "Get Started Free"}</span>
                   <ArrowRight size={20} />
                 </Link>
-                <Link href="/about" className="btn-secondary text-lg px-8 py-3">
-                  Learn More
-                </Link>
+                {!user && (
+                  <Link href="/about" className="btn-secondary text-lg px-8 py-3">
+                    Learn More
+                  </Link>
+                )}
               </div>
             </motion.div>
           </div>

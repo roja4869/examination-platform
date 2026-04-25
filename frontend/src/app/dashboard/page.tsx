@@ -8,14 +8,21 @@ import { Quiz, Attempt } from "@/types";
 import { motion } from "framer-motion";
 import { Plus, BookOpen, Clock, Award, ChevronRight, BarChart3, Users } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
   const { user, loading: authLoading } = useAuth();
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const [attempts, setAttempts] = useState<Attempt[]>([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
+    if (!authLoading && !user) {
+      router.push("/login");
+      return;
+    }
+
     const fetchData = async () => {
       try {
         const [quizRes, attemptRes] = await Promise.all([
@@ -30,12 +37,11 @@ export default function Dashboard() {
         setLoading(false);
       }
     };
+
     if (user) {
       fetchData();
-    } else if (!authLoading) {
-      setLoading(false);
     }
-  }, [user, authLoading]);
+  }, [user, authLoading, router]);
 
   if (authLoading || loading) return <LoadingSpinner />;
 
